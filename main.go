@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"github.com/jedib0t/go-pretty/v6/table"
+)
 
 type compra struct{
 	comprador string
@@ -9,6 +13,8 @@ type compra struct{
 }
 
 func main(){
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
 	var bilheteria []compra
 
 	var compraTemp compra
@@ -41,12 +47,13 @@ func main(){
 
 		if (novaCompra == "n"){
 			fmt.Println("Tickets reservados: ")
-			fmt.Println( "Nome: Qtd: Total: ")
-			
+			// fmt.Println( "Nome: Qtd: Total: ")
+			t.AppendHeader(table.Row{ "Nome", "Quantidade", "Total"})
 			for i := 0; i<len(bilheteria); i++ {
-				fmt.Println(bilheteria[i].comprador, " - ", bilheteria[i].qtd, " - ", bilheteria[i].total)
+				t.AppendRow(table.Row{bilheteria[i].comprador, bilheteria[i].qtd, bilheteria[i].total})				
+				// fmt.Println(bilheteria[i].comprador, " - ", bilheteria[i].qtd, " - ", bilheteria[i].total)
 			}
-			
+			t.Render()
 			break;
 		}
 
